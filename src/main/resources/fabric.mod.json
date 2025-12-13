@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "reload_screen_destoryer",
+  "version": "${version}",
+  "name": "Reload Screen Destoryer",
+  "description": "Stop the reload screen so it don't crashed on pojav/mojo/zalith",
+  "authors": [
+    "farnfarn02"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "stationapi:event_bus_client": [
+      "farn.reload_screen_destroyer.ReloadScreenDestroyer"
+    ]
+  },
+  "mixins": [
+    "reload.screen.destoryer.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3"
+  }
+}

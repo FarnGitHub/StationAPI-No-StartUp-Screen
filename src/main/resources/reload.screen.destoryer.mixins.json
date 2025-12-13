@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "farn.reload_screen_destroyer.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ReloadScreenManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
