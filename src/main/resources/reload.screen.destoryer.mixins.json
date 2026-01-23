@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "farn.no_loadingscreen.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ReloadScreenManagerMixin",
+    "MixinMinecraft",
+    "ReloadScreenManagerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
