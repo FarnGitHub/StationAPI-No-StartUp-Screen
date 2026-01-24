@@ -1,17 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "no_loading_screen",
+  "id": "no_startup_screen",
   "version": "${version}",
   "name": "No Start Up Screen",
-  "description": "Remove the StationAPI's startup screen due to instant crash on mobile launcher (THIS DOESN'T REMOVE RELOADING SCREEN)",
+  "description": "Remove the StationAPI's startup screen due to instant crash on mobile launcher",
   "authors": [
     "farnfarn02"
   ],
   "license": "MIT",
   "environment": "client",
   "mixins": [
-    "reload.screen.destoryer.mixins.json"
+    "no_startup_screen.mixins.json"
   ],
+  "icon": "farn/no_startup_screen/icon.png",
   "depends": {
     "minecraft": "1.0.0-beta.7.3"
   }

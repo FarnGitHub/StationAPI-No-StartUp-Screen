@@ -1,16 +1,14 @@
-package farn.no_loadingscreen.mixin;
+package farn.no_startup_screen.mixin;
 
-import net.minecraft.client.Minecraft;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.modificationstation.stationapi.api.client.resource.ReloadScreenManager;
 import net.modificationstation.stationapi.api.resource.CompositeResourceReload;
 import net.modificationstation.stationapi.api.resource.ResourceReload;
 import net.modificationstation.stationapi.impl.client.resource.ReloadScreenApplicationExecutor;
 import net.modificationstation.stationapi.impl.client.resource.ReloadScreenManagerImpl;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Drawable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Optional;
@@ -23,35 +21,23 @@ public abstract class ReloadScreenManagerMixin {
     private static @NotNull Executor applicationExecutor;
 
     @Shadow
+    @SuppressWarnings("all")
     private static @NotNull Optional<ResourceReload> currentReload;
 
-    @Shadow
-    static void onFinish() {
-        throw new AssertionError();
-    }
-
-    @Overwrite
-    public static void openEarly() throws LWJGLException {
+    @WrapMethod(method="openEarly")
+    private static void openEarlyNoStartUp(Operation<Void> original) {
         ReloadScreenManagerImpl.isMinecraftDone = false;
         applicationExecutor = ReloadScreenApplicationExecutor.INSTANCE;
         currentReload = Optional.of(new CompositeResourceReload());
     }
 
-    @Overwrite
-    public static boolean isReloadStarted() {
+    @WrapMethod(method="isReloadStarted")
+    private static boolean isReloadStartedUnused(Operation<Boolean> original) {
         return true;
     }
 
-    @Overwrite
-    public static boolean isReloadComplete() {
-        return currentReload.isPresent() && currentReload.orElse(null/*safe*/).isComplete();
-    }
-
-    @Overwrite
-    private static void onStartup(
-            final Minecraft minecraft,
-            final Drawable drawable
-    ) {
-        onFinish();
+    @WrapMethod(method="isReloadComplete")
+    private static boolean isReloadCompleteNoScreen(Operation<Boolean> original) {
+        return currentReload.isPresent() && currentReload.orElse(null).isComplete();
     }
 }

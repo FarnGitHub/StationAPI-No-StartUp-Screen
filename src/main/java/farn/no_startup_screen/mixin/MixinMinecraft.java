@@ -1,4 +1,4 @@
-package farn.no_loadingscreen.mixin;
+package farn.no_startup_screen.mixin;
 
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,7 +11,6 @@ public class MixinMinecraft {
 
     @Inject(method="init", at = @At("TAIL"))
     public void afterInit(CallbackInfo ci) {
-        ReloadScreenManagerAccessor.onStartThatShitCrasher((Minecraft) (Object) this, null);
-
+        ReloadScreenManagerAccessor.finishedReload();
     }
 }
