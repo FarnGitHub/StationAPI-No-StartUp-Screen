@@ -2,42 +2,25 @@ package farn.no_startup_screen.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import farn.no_startup_screen.NoStartUpFlag;
+import net.modificationstation.stationapi.api.StationAPI;
 import net.modificationstation.stationapi.api.client.resource.ReloadScreenManager;
-import net.modificationstation.stationapi.api.resource.CompositeResourceReload;
-import net.modificationstation.stationapi.api.resource.ResourceReload;
-import net.modificationstation.stationapi.impl.client.resource.ReloadScreenApplicationExecutor;
-import net.modificationstation.stationapi.impl.client.resource.ReloadScreenManagerImpl;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-
-import java.util.Optional;
-import java.util.concurrent.Executor;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ReloadScreenManager.class)
 public abstract class ReloadScreenManagerMixin {
 
-    @Shadow
-    private static @NotNull Executor applicationExecutor;
-
-    @Shadow
-    @SuppressWarnings("all")
-    private static @NotNull Optional<ResourceReload> currentReload;
-
-    @WrapMethod(method="openEarly")
-    private static void openEarlyNoStartUp(Operation<Void> original) {
-        ReloadScreenManagerImpl.isMinecraftDone = false;
-        applicationExecutor = ReloadScreenApplicationExecutor.INSTANCE;
-        currentReload = Optional.of(new CompositeResourceReload());
+    @Inject(method="openEarly()V", at = @At(value = "FIELD", target = "Lnet/modificationstation/stationapi/api/client/resource/ReloadScreenManager;currentReload:Ljava/util/Optional;", shift = At.Shift.AFTER), cancellable = true)
+    private static void cancelStartUpScreenThread(CallbackInfo ci) {
+        StationAPI.LOGGER.info("Canceling Startup Screen Thread");
+        ci.cancel();
     }
 
     @WrapMethod(method="isReloadStarted")
-    private static boolean isReloadStartedUnused(Operation<Boolean> original) {
-        return true;
-    }
-
-    @WrapMethod(method="isReloadComplete")
-    private static boolean isReloadCompleteNoScreen(Operation<Boolean> original) {
-        return currentReload.isPresent() && currentReload.orElse(null).isComplete();
+    private static boolean preventFreezing(Operation<Boolean> original) {
+        return NoStartUpFlag.skipCheckReloadScreenExist || original.call();
     }
 }
