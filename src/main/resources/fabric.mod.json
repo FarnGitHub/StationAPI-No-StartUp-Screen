@@ -3,7 +3,7 @@
   "id": "no_startup_screen",
   "version": "${version}",
   "name": "No Start Up Screen",
-  "description": "Remove the StationAPI's startup screen due to instant crash on mobile launcher",
+  "description": "Remove StationAPI's Startup Screen due to game crashing issue",
   "authors": [
     "farnfarn02"
   ],
@@ -14,6 +14,7 @@
   ],
   "icon": "farn/no_startup_screen/icon.png",
   "depends": {
-    "minecraft": "1.0.0-beta.7.3"
+    "minecraft": "1.0.0-beta.7.3",
+    "stationapi": "*"
   }
 }
