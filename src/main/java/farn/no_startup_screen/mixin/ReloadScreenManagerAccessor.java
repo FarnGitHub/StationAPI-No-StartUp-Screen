@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ReloadScreenManager.class)
 public interface ReloadScreenManagerAccessor {
 
+    /* onFinished called when on Title's Screen */
     @Invoker("onFinish")
     static void finishedReload() {
         throw new AssertionError();
